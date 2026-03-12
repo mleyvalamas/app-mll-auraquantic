@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MllAqFileProcessor.App/MllAqFileProcessor.App.csproj" />
+  <Project Path="MllAqFileProcessor.Tests/MllAqFileProcessor.Tests.csproj" />
+</Solution>
