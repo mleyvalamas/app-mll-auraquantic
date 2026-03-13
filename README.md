@@ -34,6 +34,7 @@ Evitar la Sobreingeniería: Para una herramienta de propósito específico, crea
 
 Eficiencia Técnica: Se priorizó el rendimiento de entrada/salida y la simplicidad (KISS). La solución es "Clean-Ready": gracias al uso de interfaces, puede escalarse a una arquitectura más compleja si el dominio creciera.
 
+```mermaid
 classDiagram
     class Program {
         +Main(args: string[])
@@ -66,6 +67,8 @@ classDiagram
     FileService ..|> IFileService : Implementa
     TextProcessorService ..|> ITextProcessorService : Implementa
 
+```
+```mermaid
     sequenceDiagram
     participant App as FileProcessorEngine
     participant SRC as Stream Origen (Disco)
@@ -85,6 +88,7 @@ classDiagram
     App->>SRC: Cierra y libera (Dispose)
     App->>DST: Cierra y libera (Dispose)
     App-->>App: Retorna total de reemplazos
+```
 
 🛠️ Principios SOLID Aplicados
 SRP (Single Responsibility): Cada componente tiene un único motivo para cambiar.
