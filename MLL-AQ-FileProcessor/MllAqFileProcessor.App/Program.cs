@@ -4,8 +4,18 @@ using MllAqFileProcessor.App.Services;
 
 namespace MllAqFileProcessor.App
 {
+    /// <summary>
+    /// Clase principal del programa. Contiene el punto de entrada de la aplicación de procesamiento de archivos.
+    /// Esta aplicación toma argumentos de línea de comandos para procesar un archivo, reemplazando texto especificado.
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// Método principal de la aplicación. Valida los argumentos de línea de comandos, configura las dependencias
+        /// y ejecuta el procesamiento del archivo. Maneja excepciones comunes y devuelve códigos de salida apropiados.
+        /// </summary>
+        /// <param name="args">Argumentos de línea de comandos: ruta_origen, ruta_destino, texto_buscar, texto_reemplazo.</param>
+        /// <returns>0 si el procesamiento es exitoso, 1 en caso de error.</returns>
         static int Main(string[] args)
         {
             // 1. Validación de número de parámetros
