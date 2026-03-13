@@ -118,13 +118,53 @@ dotnet build
 
 # Ejecutar pruebas unitarias
 dotnet test
-Uso del Programa
+
+🚦 Guía de Uso Detallada
+Esta sección describe cómo compilar, validar y ejecutar la solución tanto en entornos de desarrollo como en producción.
+
+1. Compilación de la Solución
+Antes de ejecutar, es necesario restaurar las dependencias y compilar los binarios de la solución.
+
+Bash
+# Restaura paquetes NuGet y compila todos los proyectos en la solución
+dotnet build
+Resultado esperado: El sistema generará las carpetas bin/ y obj/ con los binarios de .NET 10. Si el build es exitoso, verás un mensaje: 0 Error(s).
+
+2. Ejecución de Pruebas Unitarias (Garantía de Calidad)
+Siguiendo las mejores prácticas, se deben correr los tests para asegurar que el motor de procesamiento cumple con los requisitos lógicos.
+
+Bash
+# Ejecuta la suite de pruebas xUnit
+dotnet test
+Lo que se valida: El TextProcessorService es sometido a pruebas de reemplazo simple, múltiple, sensibilidad a mayúsculas y manejo de cadenas vacías. Es vital que todas las pruebas pasen (Passed!) antes de cualquier despliegue.
+
+3. Ejecución en Entorno de Desarrollo
+Para probar la aplicación directamente desde el código fuente sin generar binarios permanentes:
+
 Bash
 dotnet run --project MllAqFileProcessor.App/MllAqFileProcessor.App.csproj \
     "<ruta_origen>" \
     "<ruta_destino>" \
     "<texto_a_buscar>" \
     "<texto_reemplazo>"
-Autor: Manuel Leyva Lamas
 
-Especialidad: Ingeniería de Software y Arquitectura .NET
+Ejemplo de llamada real:
+
+Bash
+dotnet run --project MllAqFileProcessor.App/MllAqFileProcessor.App.csproj \
+    "./MllAqFileProcessor.App/Data/origen.txt" \
+    "./MllAqFileProcessor.App/Data/destino.txt" \
+    "auraportal" \
+    "ap"
+
+4. Publicación para Producción (Windows .EXE)
+Si deseas generar un archivo ejecutable optimizado para Windows que no dependa de tener instalado el SDK de .NET 10:
+
+Bash
+dotnet publish MllAqFileProcessor.App/MllAqFileProcessor.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+
+Esto generará un único archivo MllAqFileProcessor.App.exe en la carpeta ./publish, listo para ser distribuido.
+
+👨‍💻 Autor
+Manuel Leyva Lamas 
+Ingeniero de Software
