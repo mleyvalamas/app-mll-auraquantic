@@ -34,6 +34,8 @@ Evitar la Sobreingeniería: Para una herramienta de propósito específico, crea
 
 Eficiencia Técnica: Se priorizó el rendimiento de entrada/salida y la simplicidad (KISS). La solución es "Clean-Ready": gracias al uso de interfaces, puede escalarse a una arquitectura más compleja si el dominio creciera.
 
+Diagrama de Clases:
+
 ```mermaid
 classDiagram
     class Program {
@@ -68,6 +70,9 @@ classDiagram
     TextProcessorService ..|> ITextProcessorService : Implementa
 
 ```
+
+Diagrama de Sequencia:
+
 ```mermaid
     sequenceDiagram
     participant App as FileProcessorEngine
