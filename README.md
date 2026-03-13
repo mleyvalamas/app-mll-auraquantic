@@ -1,4 +1,5 @@
 # app-mll-auraquantic
+App de ejercicio para AuraQuantic
 
 MLL-AQ-FileProcessor
 Este proyecto es una herramienta de consola de alto rendimiento desarrollada en .NET 10 y C# 14, diseñada para el procesamiento eficiente de archivos de texto masivos. Permite buscar y reemplazar cadenas de texto de forma segura, generando un reporte detallado de la operación.
@@ -32,6 +33,58 @@ Como ingeniero senior, la decisión de no aplicar Clean Architecture se basa en 
 Evitar la Sobreingeniería: Para una herramienta de propósito específico, crear múltiples proyectos y capas de transporte (DTOs/Mappers) añadiría una complejidad innecesaria que no aporta valor al negocio en este caso.
 
 Eficiencia Técnica: Se priorizó el rendimiento de entrada/salida y la simplicidad (KISS). La solución es "Clean-Ready": gracias al uso de interfaces, puede escalarse a una arquitectura más compleja si el dominio creciera.
+
+classDiagram
+    class Program {
+        +Main(args: string[])
+    }
+    class FileProcessorEngine {
+        -IFileService _fileService
+        -ITextProcessorService _textProcessor
+        +Run(source, target, search, replace) int
+    }
+    class IFileService {
+        <<interface>>
+        +Exists(path) bool
+        +OpenReader(path) StreamReader
+        +OpenWriter(path) StreamWriter
+    }
+    class ITextProcessorService {
+        <<interface>>
+        +ProcessLine(line, search, replace) ProcessResult
+    }
+    class FileService {
+        +Implementación I/O
+    }
+    class TextProcessorService {
+        +Implementación Regex
+    }
+
+    Program --> FileProcessorEngine : Instancia y ejecuta
+    FileProcessorEngine ..> IFileService : Depende de
+    FileProcessorEngine ..> ITextProcessorService : Depende de
+    FileService ..|> IFileService : Implementa
+    TextProcessorService ..|> ITextProcessorService : Implementa
+
+    sequenceDiagram
+    participant App as FileProcessorEngine
+    participant SRC as Stream Origen (Disco)
+    participant PROC as TextProcessorService
+    participant DST as Stream Destino (Disco)
+
+    App->>SRC: Abre flujo de lectura
+    App->>DST: Abre flujo de escritura
+    
+    loop Por cada línea del archivo
+        SRC->>App: Lee línea (Buffer)
+        App->>PROC: ProcessLine(linea, buscar, reemplazar)
+        PROC-->>App: Retorna (LineaProcesada, Conteo)
+        App->>DST: Escribe línea procesada
+    end
+    
+    App->>SRC: Cierra y libera (Dispose)
+    App->>DST: Cierra y libera (Dispose)
+    App-->>App: Retorna total de reemplazos
 
 🛠️ Principios SOLID Aplicados
 SRP (Single Responsibility): Cada componente tiene un único motivo para cambiar.
