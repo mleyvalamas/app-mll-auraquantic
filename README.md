@@ -34,6 +34,7 @@ Evitar la Sobreingeniería: Para una herramienta de propósito específico, crea
 
 Eficiencia Técnica: Se priorizó el rendimiento de entrada/salida y la simplicidad (KISS). La solución es "Clean-Ready": gracias al uso de interfaces, puede escalarse a una arquitectura más compleja si el dominio creciera.
 
+<pre>
 classDiagram
     class Program {
         +Main(args: string[])
@@ -59,7 +60,8 @@ classDiagram
     class TextProcessorService {
         +Implementación Regex
     }
-
+</pre>
+<pre>
     Program --> FileProcessorEngine : Instancia y ejecuta
     FileProcessorEngine ..> IFileService : Depende de
     FileProcessorEngine ..> ITextProcessorService : Depende de
@@ -85,6 +87,7 @@ classDiagram
     App->>SRC: Cierra y libera (Dispose)
     App->>DST: Cierra y libera (Dispose)
     App-->>App: Retorna total de reemplazos
+</pre>
 
 🛠️ Principios SOLID Aplicados
 SRP (Single Responsibility): Cada componente tiene un único motivo para cambiar.
