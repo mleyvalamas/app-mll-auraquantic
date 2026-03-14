@@ -19,22 +19,35 @@ namespace MllAqFileProcessor.Tests
         /// <param name="expectedLine">Línea esperada después del procesamiento.</param>
         /// <param name="expectedCount">Número esperado de reemplazos.</param>
         [Theory]
-        [InlineData("Hola mundo", "mundo", "C#", "Hola C#", 1)]
+        [InlineData("Hola mundo", "mundo", "AuraQuantic", "Hola AuraQuantic", 1)]
         [InlineData("auraportal es auraportal", "auraportal", "ap", "ap es ap", 2)]
-        [InlineData("No hay coincidencias", "test", "reemplazo", "No hay coincidencias", 0)]
+        [InlineData("No hay coincidencias", "C#", "Java", "No hay coincidencias", 0)]
         [InlineData("Caso sensible a MAYUSCULAS", "mayusculas", "X", "Caso sensible a MAYUSCULAS", 0)]
         public void ProcessLine_ShouldReplaceAndCountCorrectly(
             string input, string search, string replace, string expectedLine, int expectedCount)
         {
-            // Arrange
+            // Preparar
             var service = new TextProcessorService();
 
-            // Act
+            // Actuar
             var result = service.ProcessLine(input, search, replace);
 
-            // Assert
+            // Afirmar
             Assert.Equal(expectedLine, result.ProcessedLine);
             Assert.Equal(expectedCount, result.ReplacementCount);
+        }
+
+        /// <summary>
+        /// Prueba que ProcessLine lance ArgumentNullException si la línea de entrada es null.
+        /// </summary>
+        [Fact]
+        public void ProcessLine_ShouldThrowArgumentNullException_WhenLineIsNull()
+        {
+            // Preparar
+            var service = new TextProcessorService();
+
+            // Actuar y Afirmar
+            Assert.Throws<ArgumentNullException>(() => service.ProcessLine(null, "buscar", "reemplazar"));
         }
     }
 }

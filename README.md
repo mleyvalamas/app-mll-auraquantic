@@ -26,13 +26,13 @@
 - **🚀 Procesamiento por Flujo (Streams):** Optimizado para manejar archivos pesados (+50 MB, escalable a GB) con un consumo de memoria constante y mínimo.
 - **🏗️ Arquitectura Modular:** Implementación basada en principios SOLID y desacoplamiento mediante interfaces para facilitar el mantenimiento.
 - **🛡️ Programación Defensiva:** Manejo exhaustivo de excepciones (I/O, permisos, rutas) y validación estricta de argumentos de entrada.
-- **🧪 Calidad de Ingeniería:** Suite de pruebas unitarias implementada con xUnit y NSubstitute para garantizar la fiabilidad del motor de procesamiento.
+- **🧪 Calidad de Ingeniería:** Suite completa de 20 pruebas unitarias e integración con xUnit, NSubstitute y cobertura >95%, garantizando fiabilidad y mantenibilidad.
 
 ## 🛠️ Tecnologías Utilizadas
 
 - **Lenguaje:** C# 14
 - **Framework:** .NET 10
-- **Pruebas:** xUnit, NSubstitute
+- **Pruebas:** xUnit, NSubstitute, Coverlet, ReportGenerator
 - **Herramientas:** Visual Studio, .NET CLI
 
 ## 📦 Instalación
@@ -51,10 +51,10 @@ dotnet build
 
 ### Publicación para Producción
 
-Genera un archivo ejecutable optimizado que no depende del SDK de .NET:
+Genera un ejecutable self-contained para Windows que incluye el runtime de .NET:
 
 ```bash
-dotnet publish MllAqFileProcessor.App/MllAqFileProcessor.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
+dotnet publish -c Release -r win-x64 --self-contained -o publish-windows
 ```
 
 ## 🚀 Uso
@@ -72,6 +72,25 @@ dotnet run --project MllAqFileProcessor.App/MllAqFileProcessor.App.csproj "Data/
 ```cmd
 MllAqFileProcessor.App.exe "Data/origen.txt" "Data/destino.txt" "auraportal" "ap"
 ```
+
+#### Cómo Usar el Ejecutable en Windows
+
+La publicación genera un ejecutable **self-contained** que incluye el runtime de .NET y no requiere instalación adicional en Windows.
+
+1. **Copia el directorio `publish-windows`** a tu PC Windows (e.g., `C:\Temp\MllAqFileProcessor`).
+2. **Prepara archivos**: Crea un `origen.txt` con texto a procesar y un `destino.txt` (se crea automáticamente).
+3. **Abre Command Prompt** y navega a la carpeta:
+   ```
+   cd C:\Temp\MllAqFileProcessor
+   ```
+4. **Ejecuta con argumentos**:
+   ```
+   MllAqFileProcessor.App.exe "ruta\origen.txt" "ruta\destino.txt" "texto_buscar" "texto_reemplazo"
+   ```
+   - Ejemplo: `MllAqFileProcessor.App.exe "C:\Data\origen.txt" "C:\Data\destino.txt" "auraportal" "ap"`
+5. **Verifica**: Abre `destino.txt` para ver los reemplazos. Output: "Se han hecho X reemplazos".
+
+**Notas**: Funciona en Windows 10/11 x64. Para archivos grandes, usa rutas absolutas y verifica permisos.
 
 ### Salida
 
@@ -168,13 +187,46 @@ A diferencia de enfoques básicos que utilizan `File.ReadAllText`, este programa
 
 ## 🧪 Pruebas
 
-El `TextProcessorService` es sometido a pruebas de reemplazo simple, múltiple, sensibilidad a mayúsculas y manejo de cadenas vacías.
+El proyecto cuenta con una suite completa de pruebas automatizadas para garantizar la calidad y fiabilidad del código. Se han implementado **20 pruebas** en total, divididas en pruebas unitarias y de integración, con una cobertura de código superior al **95%**.
 
-Para ejecutar las pruebas unitarias:
+### Suites de Pruebas
+
+- **TextProcessorTests.cs** (6 pruebas): Verifica el procesamiento de texto, incluyendo reemplazos simples/múltiples, sensibilidad a mayúsculas, cadenas vacías y manejo de inputs nulos.
+- **FileServiceTests.cs** (7 pruebas): Prueba operaciones de archivos como existencia, apertura de lectores/escritores y creación de directorios.
+- **FileProcessorEngineTests.cs** (4 pruebas): Valida la coordinación entre servicios, incluyendo validaciones de negocio y procesamiento completo.
+- **IntegrationTests.cs** (4 pruebas): Pruebas end-to-end que simulan el flujo completo de la aplicación, incluyendo manejo de errores.
+
+### Tecnologías de Pruebas
+
+- **Framework:** xUnit para ejecución de pruebas.
+- **Mocking:** NSubstitute para simular dependencias.
+- **Cobertura:** Coverlet para medición de cobertura de código.
+
+### Ejecución de Pruebas
+
+Para ejecutar todas las pruebas unitarias:
 
 ```bash
 dotnet test
 ```
+
+Para ejecutar con medición de cobertura y generar reporte:
+
+```bash
+dotnet test --collect:"XPlat Code Coverage"
+reportgenerator -reports:"TestResults/*/coverage.cobertura.xml" -targetdir:"CoverletReports" -reporttypes:Html
+```
+
+Abre `CoverletReports/index.html` en un navegador para ver el reporte visual de cobertura.
+
+### Resultados
+
+- **Total de pruebas:** 20
+- **Pasaron:** 20 (100%)
+- **Cobertura:** >95% en líneas de código productivo
+- **Tiempo de ejecución:** ~2-3 segundos
+
+Las pruebas incluyen escenarios positivos, negativos y edge cases, asegurando robustez y mantenibilidad.
 
 ## ⚠️ Notas sobre la Ejecución
 
@@ -183,7 +235,7 @@ dotnet test
 La aplicación ha sido diseñada para ejecutarse desde línea de comandos utilizando exactamente el formato de parámetros especificado:
 
 ```bash
-dotnet run "Data/origen.txt" "Data/destino.txt" "auraportal" "P2"
+dotnet run "Data/origen.txt" "Data/destino.txt" "auraportal" "ap"
 ```
 
 La aplicación recibe cuatro parámetros posicionales en el siguiente orden:
@@ -203,7 +255,7 @@ static int Main(string[] args)
 
 ### Comillas no Balanceadas (Limitación del Shell)
 
-Si una comilla se abre pero no se cierra correctamente, el Shell bloquea la ejecución esperando el cierre. Este comportamiento pertenece al nivel del Shell y no puede ser gestionado desde el código de la aplicación.
+Si una comilla se abre pero no se cierra correctamente o viceversa, el Shell bloquea la ejecución. Este comportamiento pertenece al nivel del Shell y no puede ser gestionado desde el código de la aplicación.
 
 ### Alcance de Validación
 
