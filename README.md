@@ -41,6 +41,14 @@
 
 - .NET 10 SDK instalado. Puedes descargarlo desde [dotnet.microsoft.com](https://dotnet.microsoft.com/download).
 
+### Directorio de Trabajo
+
+Todos los comandos en esta guía asumen que estás posicionado en el directorio `MLL-AQ-FileProcessor/` (el directorio raíz del proyecto). Navega allí con:
+
+```bash
+cd MLL-AQ-FileProcessor
+```
+
 ### Compilación
 
 Para restaurar las dependencias y compilar los binarios de la solución:
@@ -48,6 +56,8 @@ Para restaurar las dependencias y compilar los binarios de la solución:
 ```bash
 dotnet build
 ```
+
+*Nota: Ejecuta este comando desde el directorio `MLL-AQ-FileProcessor/`.*
 
 ### Publicación para Producción
 
@@ -57,6 +67,8 @@ Genera un ejecutable self-contained para Windows que incluye el runtime de .NET:
 dotnet publish -c Release -r win-x64 --self-contained -o publish-windows
 ```
 
+*Nota: Ejecuta este comando desde el directorio `MLL-AQ-FileProcessor/`.*
+
 ## 🚀 Uso
 
 El programa recibe exactamente 4 parámetros en el siguiente orden: `<origen>` `<destino>` `<texto_buscar>` `<texto_reemplazo>`.
@@ -64,8 +76,10 @@ El programa recibe exactamente 4 parámetros en el siguiente orden: `<origen>` `
 ### Ejemplo en Desarrollo
 
 ```bash
-dotnet run --project MllAqFileProcessor.App/MllAqFileProcessor.App.csproj "Data/origen.txt" "Data/destino.txt" "auraportal" "ap"
+dotnet run --project MllAqFileProcessor.App/MllAqFileProcessor.App.csproj "MllAqFileProcessor.App/Data/origen.txt" "MllAqFileProcessor.App/Data/destino.txt" "auraportal" "ap"
 ```
+
+*Nota: Ejecuta este comando desde el directorio `MLL-AQ-FileProcessor/`.*
 
 ### Ejemplo en Producción (Windows)
 
@@ -219,6 +233,8 @@ reportgenerator -reports:"TestResults/*/coverage.cobertura.xml" -targetdir:"Cove
 
 Abre `CoverletReports/index.html` en un navegador para ver el reporte visual de cobertura.
 
+*Nota: Ejecuta estos comandos desde el directorio `MLL-AQ-FileProcessor/`.*
+
 ### Resultados
 
 - **Total de pruebas:** 20
@@ -235,8 +251,10 @@ Las pruebas incluyen escenarios positivos, negativos y edge cases, asegurando ro
 La aplicación ha sido diseñada para ejecutarse desde línea de comandos utilizando exactamente el formato de parámetros especificado:
 
 ```bash
-dotnet run "Data/origen.txt" "Data/destino.txt" "auraportal" "ap"
+dotnet run "MllAqFileProcessor.App/Data/origen.txt" "MllAqFileProcessor.App/Data/destino.txt" "auraportal" "ap"
 ```
+
+*Nota: Ejecuta este comando desde el directorio `MLL-AQ-FileProcessor/`.*
 
 La aplicación recibe cuatro parámetros posicionales en el siguiente orden:
 
