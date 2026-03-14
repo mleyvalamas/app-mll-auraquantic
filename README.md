@@ -251,10 +251,10 @@ Las pruebas incluyen escenarios positivos, negativos y edge cases, asegurando ro
 La aplicación ha sido diseñada para ejecutarse desde línea de comandos utilizando exactamente el formato de parámetros especificado:
 
 ```bash
-dotnet run "MllAqFileProcessor.App/Data/origen.txt" "MllAqFileProcessor.App/Data/destino.txt" "auraportal" "ap"
+dotnet run "Data/origen.txt" "Data/destino.txt" "auraportal" "ap"
 ```
 
-*Nota: Ejecuta este comando desde el directorio `MLL-AQ-FileProcessor/`.*
+*Nota: Ejecuta este comando desde el directorio `MLL-AQ-FileProcessor/MllAqFileProcessor.App`.*
 
 La aplicación recibe cuatro parámetros posicionales en el siguiente orden:
 
